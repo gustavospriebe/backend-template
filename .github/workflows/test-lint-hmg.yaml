@@ -7,8 +7,10 @@ on:
 
 jobs:
   lint-and-test:
-    name: Lint and Test
+    name: Lint and Test HMG
     runs-on: ubuntu-latest
+    env:
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
     strategy:
       matrix:
         node-version: [20.9]
@@ -22,8 +24,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        run: npm ci
+        run: yarn install --frozen-lockfile
       - name: Run lint
-        run: npm run lint
+        run: yarn lint
       - name: Run tests
-        run: npm run test
+        run: yarn test

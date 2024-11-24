@@ -9,6 +9,8 @@ jobs:
   lint-and-test:
     name: Lint and Test
     runs-on: ubuntu-latest
+    env:
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
     strategy:
       matrix:
         node-version: [20.9]

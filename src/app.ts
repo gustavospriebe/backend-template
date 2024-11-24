@@ -6,6 +6,7 @@ import { Server } from "http"
 import { env } from "./config/env"
 import { appRoutes } from "./routes/app"
 import { jwtErrorCustomMessages } from "./utils/jwtErrorCustomMessages"
+import { ZodError } from "zod"
 
 // TODO: configure tests
 // TODO: configure swagger
@@ -50,26 +51,26 @@ if (process.env.NODE_ENV !== "test") {
   })
 }
 
-// app.setErrorHandler((error, request, reply) => {
-//   if (error instanceof ZodError) {
-//     return reply
-//       .status(400)
-//       .send({ message: "Validation error.", issues: error.format() })
-//   }
-//   if (error.code === "FST_JWT_NO_AUTHORIZATION_IN_HEADER") {
-//     reply.status(401).send({ message: error.message })
-//   }
-//   if (error.code === "FST_JWT_AUTHORIZATION_TOKEN_EXPIRED") {
-//     reply.status(401).send({ message: error.message })
-//   }
-//   if (error.code === "FAST_JWT_INVALID_ALGORITHM") {
-//     reply.status(401).send({ message: error.message })
-//   }
-//   if (error.code === "FST_JWT_AUTHORIZATION_TOKEN_INVALID") {
-//     reply.status(401).send({ message: error.message })
-//   }
-//   if (env.NODE_ENV !== "production") {
-//     console.error(error)
-//   }
-//   return reply.status(500).send({ message: "internal server error." })
-// })
+app.setErrorHandler((error, request, reply) => {
+  if (error instanceof ZodError) {
+    return reply
+      .status(400)
+      .send({ message: "Validation error.", issues: error.format() })
+  }
+  if (error.code === "FST_JWT_NO_AUTHORIZATION_IN_HEADER") {
+    return reply.status(401).send({ message: error.message })
+  }
+  if (error.code === "FST_JWT_AUTHORIZATION_TOKEN_EXPIRED") {
+    return reply.status(401).send({ message: error.message })
+  }
+  if (error.code === "FAST_JWT_INVALID_ALGORITHM") {
+    return reply.status(401).send({ message: error.message })
+  }
+  if (error.code === "FST_JWT_AUTHORIZATION_TOKEN_INVALID") {
+    return reply.status(401).send({ message: error.message })
+  }
+  if (env.NODE_ENV !== "production") {
+    console.error(error)
+  }
+  return reply.status(500).send({ message: "internal server error." })
+})

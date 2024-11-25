@@ -50,37 +50,73 @@ yarn install
 ### Running locally
 
 ```bash
+
 # Start the development server with hot reload
+
 yarn dev
+
 # Run tests
+
 yarn test
+
 # Run linting
+
 yarn lint
+
 ```
 
 ### Using Docker
 
 ```bash
+
 # Start the application and database
+
 yarn docker:start
+
 # Start in detached mode
+
 yarn docker:start:detach
+
+# Execute commands in app container
+
+yarn docker:exec:app
+
+# Execute commands in database container
+
+yarn docker:exec:db
+
 # View logs
+
 yarn docker:logs
+
 # Stop containers
+
 yarn docker:stop
+
 ```
 
-## Database
+### Database
 
 The project uses Kysely as the SQL query builder and PostgreSQL as the database.
 
-### Migrations
-
-Run database migrations:
-
 ```bash
-yarn migrate
+
+# Generate TypeScript types from database
+
+yarn codegen
+
+# Generate new migration
+
+yarn kysely:generate
+
+# Run migrations
+
+yarn kysely:migrate
+
+# Rollback migration
+
+yarn kysely:down
+
 ```
 
 ## Testing

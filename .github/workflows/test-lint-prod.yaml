@@ -1,13 +1,13 @@
-name: Test Lint HMG
+name: Test Lint PROD
 
 on:
   pull_request:
     branches:
-      - homolog
+      - main
 
 jobs:
   lint-and-test:
-    name: Lint and Test HMG
+    name: Lint and Test PROD
     runs-on: ubuntu-latest
     env:
       JWT_SECRET: ${{ secrets.JWT_SECRET }}

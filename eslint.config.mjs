@@ -17,7 +17,7 @@ export default [
     },
   },
   {
-    files: ["tests/**"], // or any other pattern
+    files: ["tests/**"],
     plugins: {
       vitest,
     },
@@ -30,10 +30,8 @@ export default [
   { languageOptions: { globals: globals.node } },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
-  // {
-  //   rules: {
-  //     "@typescript-eslint/no-explicit-any": "off",
-  //   },
-  // },
+  {
+    rules: {},
+  },
   eslintConfigPrettier,
 ]

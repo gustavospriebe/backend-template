@@ -6,7 +6,7 @@ const envSchema = z.object({
     .enum(["test", "development", "production", "hmg"])
     .default("development"),
   APP_PORT: z.coerce.number().default(8000),
-  // TEST_APP_PORT: z.coerce.number().default(8001),
+  TEST_APP_PORT: z.coerce.number().default(8001),
   DATABASE_URL: z.string().optional(),
   JWT_SECRET: z.string(),
 })

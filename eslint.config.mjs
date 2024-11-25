@@ -31,7 +31,9 @@ export default [
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    rules: {},
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+    },
   },
   eslintConfigPrettier,
 ]

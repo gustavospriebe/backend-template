@@ -1,29 +1,26 @@
 import cors from "@fastify/cors"
 import { fastifyJwt } from "@fastify/jwt"
-import { fastifyRateLimit } from "@fastify/rate-limit"
 import fastify, { FastifyInstance } from "fastify"
+import { promises as fs } from "fs"
 import { Server } from "http"
+import { FileMigrationProvider, Migrator } from "kysely"
+import * as path from "path"
+import { ZodError } from "zod"
+import { db } from "./config/database"
 import { env } from "./config/env"
 import { appRoutes } from "./routes/app"
 import { jwtErrorCustomMessages } from "./utils/jwtErrorCustomMessages"
-import { ZodError } from "zod"
-
-// TODO: configure tests
-// TODO: configure swagger
-// TODO: configure jwt
-// TODO: configure DB
-// TODO: configure migrations
 
 export const app: FastifyInstance = fastify()
 
 app.register(cors, { origin: "*" })
 
 // this is like 1 request per second
-app.register(fastifyRateLimit, {
-  max: 300,
-  timeWindow: "5 minute",
-  allowList: ["127.0.0.1"],
-})
+// app.register(fastifyRateLimit, {
+//   max: 300,
+//   timeWindow: "5 minute",
+//   allowList: ["127.0.0.1"],
+// })
 
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
@@ -35,12 +32,25 @@ app.register(appRoutes, { prefix: "/app" })
 export let server: Server
 
 export const startServer = async (): Promise<Server> => {
+  const port = env.NODE_ENV === "test" ? env.TEST_APP_PORT : env.APP_PORT
   await app.listen({
     host: "0.0.0.0",
-    port: env.APP_PORT,
+    port,
   })
   server = app.server
-  console.log(`HTTP Server Running: ${env.APP_PORT}`)
+  console.log(`HTTP Server Running: ${port}`)
+
+  const migrator = new Migrator({
+    db,
+    provider: new FileMigrationProvider({
+      fs,
+      path,
+      migrationFolder: "./src/database/migrations",
+    }),
+  })
+  await migrator.migrateToLatest()
+  console.log("Migrations applied")
+
   return server
 }
 

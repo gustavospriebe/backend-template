@@ -13,12 +13,12 @@ services:
     volumes:
       - ../:/app
       - /app/node_modules
-    command: yarn start
+    command: yarn dev
 
   db:
     image: postgres:15-alpine
     ports:
-      - "5433:5432"
+      - "5432:5432"
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password

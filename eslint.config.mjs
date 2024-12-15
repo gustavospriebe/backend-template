@@ -6,7 +6,7 @@ import tseslint from "typescript-eslint"
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-  { ignores: ["dist/", "node_modules/"] },
+  { ignores: ["build/", "node_modules/"] },
   {
     files: ["src/**/*.{js,ts,jsx,tsx}"],
     languageOptions: {

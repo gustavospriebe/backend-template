@@ -28,7 +28,7 @@ COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile --production
 
 # Copy built files from builder stage
-COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/build ./build
 
 EXPOSE 8000
 
